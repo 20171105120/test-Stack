@@ -32,45 +32,66 @@ struct Stack<T>
         return array.last
     }
 }
-/*struct Stack
+public func Isnumber(number:Character)->Bool
 {
-    fileprivate var array: [String]=[]
-    mutating func push(_ element: String)
+    if number >= "0" && number <= "9"
     {
-        array.append(element)
+        return true;
     }
-    mutating func pop() -> String?
+    else
     {
-        return array.popLast()
-    }
-    func peek() -> String?
-    {
-        return array.last
+        return false;
     }
 }
-extension Stack: CustomStringConvertible
+public func OperatorPriority(opp:Character)->Int
 {
-    var description: String {
-        let topDivider = "-----Stack---\n"
-        let bottomDivider = "\n----------\n"
-        
-        let stackElements = array.reversed().joined(separator: "\n")
-        return topDivider + stackElements + bottomDivider
+    //运算优先级判断
+    switch  opp
+    {
+    case "#":
+        return 0
+    case "(":
+        return 1
+    case "+":
+        return 2
+    case "-":
+        return 2
+    case "*":
+        return 3
+    case "/":
+        return 3
+    case ")":
+        return 4
+    default:
+        return -1
     }
-}*/
-
+}
 class ViewController: UIViewController {
     var StackDouble = Stack<Double>()
     var StackSymbol = Stack<String>()
     var value1:Double = 0.0
     var value2:Double = 0.0
-    var sum:Double = 0.0
+    var sum1:Double = 0.0
+    var sum2:Double = 0.0
     var temp:Int = 0
     var symbol:String = ""
     var isvalue2: Bool = false
     var issecend: Bool = false
     var PointFlag: Bool = false
+
+public func CutString(str:String)
+{
+    let str1 = Result.text!
+    for inf in str1
+    {
+        if Isnumber(number: inf)
+        {
+            let valid = String(inf)
+            StackDouble.push(Double(valid)!)
+        }
     
+    }
+}
     @IBOutlet weak var value: UITextField!
     @IBOutlet weak var Result: UITextField!
     @IBAction func number1(_ sender: Any) {
@@ -84,12 +105,10 @@ class ViewController: UIViewController {
         if isvalue2
         {
             value2 = NSString(string: value.text!).doubleValue
-            value2 = NSString(string: Result.text!).doubleValue
         }
         else
         {
             value1 = NSString(string: value.text!).doubleValue
-            value1 = NSString(string: Result.text!).doubleValue
         }
         temp = 1
     }
@@ -103,12 +122,10 @@ class ViewController: UIViewController {
         if isvalue2
         {
             value2 = NSString(string: value.text!).doubleValue
-            value2 = NSString(string: Result.text!).doubleValue
         }
         else
         {
             value1 = NSString(string: value.text!).doubleValue
-            value1 = NSString(string: Result.text!).doubleValue
         }
         temp = 1
     }
@@ -122,18 +139,17 @@ class ViewController: UIViewController {
         if isvalue2
         {
             value2 = NSString(string: value.text!).doubleValue
-            value2 = NSString(string: Result.text!).doubleValue
         }
         else
         {
             value1 = NSString(string: value.text!).doubleValue
-            value1 = NSString(string: Result.text!).doubleValue
         }
         temp = 1
     }
     @IBAction func result(_ sender: Any) {
-        var str1:String = Result.text!
-        
+        //let str1:String = Result.text!
+        //let test = str1.components(separatedBy: "+")
+        //let test1 = str1.index(of:"+")
         if isvalue2
         {
             if symbol == "/" && value2 == 0
@@ -144,37 +160,43 @@ class ViewController: UIViewController {
             switch symbol
             {
             case "+" :
-                sum = value1 + value2
+                sum1 = value1 + value2
             case "-" :
-                sum = value1 - value2
+                sum1 = value1 - value2
             case "*" :
-                sum = value1 * value2
+                sum1 = value1 * value2
             case "/" :
-                sum = value1 / value2
+                sum1 = value1 / value2
             case "^" :
-                sum = pow(value1,value2)
+                sum1 = pow(value1,value2)
             case "√" :
-                sum = sqrt(value1)
+                sum1 = sqrt(value1)
             default :
-                sum = 0.0
+                sum1 = 0.0
             }
-            Result.text = sum.description
+            value.text = sum1.description
+            Result.text = sum2.description
         }
-        print(str1)
+        print(value1)
+        print(value2)
+        print(sum1)
+        print(sum2)
+        //print(str1)
+        //print(test)
     }
     @IBAction func add(_ sender: Any) {
         symbol = "+"
         value.text = value.text!+"+"
         Result.text = Result.text!+"+"
         isvalue2 = true
-        sum = value1 + value2
-        if sum != 0
+        sum1 = value1 + value2
+        if sum1 != 0
         {
             temp = 2
         }
         if temp == 2
         {
-            value1 = sum
+            value1 = sum1
             value2 = 0.0
         }
         value.text = value1.description
@@ -184,14 +206,14 @@ class ViewController: UIViewController {
         value.text = value.text!+"-"
         Result.text = Result.text!+"-"
         isvalue2 = true
-        sum = value1 - value2
-        if sum != 0
+        sum1 = value1 - value2
+        if sum1 != 0
         {
             temp = 2
         }
         if temp == 2
         {
-            value1 = sum
+            value1 = sum1
             value2 = 0.0
         }
         value.text = value1.description
@@ -201,14 +223,14 @@ class ViewController: UIViewController {
         value.text = value.text!+"×"
         Result.text = Result.text!+"*"
         isvalue2 = true
-        sum = value1 * value2
-        if sum != 0
+        sum1 = value1 * value2
+        if sum1 != 0
         {
             temp = 2
         }
         if temp == 2
         {
-            value1 = sum
+            value1 = sum1
             value2 = 0.0
         }
         value.text = value1.description
@@ -222,14 +244,14 @@ class ViewController: UIViewController {
         {
             value2 = 1
         }
-        sum = value1 / value2
-        if sum != 0
+        sum1 = value1 / value2
+        if sum1 != 0
         {
             temp = 2
         }
         if temp == 2
         {
-            value1 = sum
+            value1 = sum1
             value2 = 0.0
         }
         value.text = value1.description
