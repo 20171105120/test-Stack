@@ -43,10 +43,21 @@ public func Isnumber(number:Character)->Bool
         return false;
     }
 }
+public func Issymbol(symbol:Character)->Bool
+{
+    if symbol == "+" || symbol == "-" || symbol == "*" || symbol == "/" || symbol == "(" || symbol == ")"
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 public func OperatorPriority(opp:Character)->Int
 {
     //运算优先级判断
-    switch  opp
+    switch opp
     {
     case "#":
         return 0
@@ -73,13 +84,15 @@ class ViewController: UIViewController {
     var value2:Double = 0.0
     var sum1:Double = 0.0
     var sum2:Double = 0.0
+    var num1:Double = 0.0
+    var num2:Double = 0.0
     var temp:Int = 0
     var symbol:String = ""
     var isvalue2: Bool = false
     var issecend: Bool = false
     var PointFlag: Bool = false
 
-public func CutString(str:String)
+public func CutString()
 {
     let str1 = Result.text!
     for inf in str1
@@ -89,7 +102,11 @@ public func CutString(str:String)
             let valid = String(inf)
             StackDouble.push(Double(valid)!)
         }
-    
+        if Issymbol(symbol: inf)
+        {
+            let Issym = String(inf)
+            StackSymbol.push(Issym)
+        }
     }
 }
     @IBOutlet weak var value: UITextField!
@@ -147,9 +164,7 @@ public func CutString(str:String)
         temp = 1
     }
     @IBAction func result(_ sender: Any) {
-        //let str1:String = Result.text!
-        //let test = str1.components(separatedBy: "+")
-        //let test1 = str1.index(of:"+")
+        CutString()
         if isvalue2
         {
             if symbol == "/" && value2 == 0
@@ -157,6 +172,25 @@ public func CutString(str:String)
                 print("Error: 除数不能为0")
                 return
             }
+            num1 = StackDouble.pop()!
+            num2 = StackDouble.pop()!
+            if(StackSymbol.pop() == "+")
+            {
+                sum2 = num1 + num2
+            }
+            if(StackSymbol.pop() == "-")
+            {
+                sum2 = num2 - num1
+            }
+            if(StackSymbol.pop() == "*")
+            {
+                sum2 = num2 * num1
+            }
+            if(StackSymbol.pop() == "÷")
+            {
+                sum2 = num2 / num1
+            }
+            StackDouble.push(sum2)
             switch symbol
             {
             case "+" :
@@ -180,9 +214,16 @@ public func CutString(str:String)
         print(value1)
         print(value2)
         print(sum1)
-        print(sum2)
-        //print(str1)
-        //print(test)
+        var a = StackDouble.pop()
+        print(a)
+        a = StackDouble.pop()
+        print(a)
+        a = StackDouble.pop()
+        print(a)
+        var b = StackSymbol.pop()
+        print(b)
+        b = StackSymbol.pop()
+        print(b)
     }
     @IBAction func add(_ sender: Any) {
         symbol = "+"
