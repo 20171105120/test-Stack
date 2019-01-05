@@ -109,6 +109,13 @@ public func CutString()
         }
     }
 }
+public func compare()
+{
+    if((StackSymbol.peak == "-"||StackSymbol.peak == "+")&&(symbol == "*"||symbol == "/"))
+    {
+        StackSymbol.push(symbol)
+    }
+}
     @IBOutlet weak var value: UITextField!
     @IBOutlet weak var Result: UITextField!
     @IBAction func number1(_ sender: Any) {
